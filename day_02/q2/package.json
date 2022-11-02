@@ -1,0 +1,11 @@
+{
+  "name": "w1d2_q2",
+  "version": "1.0.0",
+  "description": "http method checking and responding",
+  "main": "app02.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
