@@ -68,7 +68,7 @@ module.exports.addOne = function(req,res){
         titles : req.body.titles,
         published : req.body.published,
         status : req.body.status,
-        genres : [req.body.genres]
+        genres : req.body.genres
     }
     Manga.create(newManga, function(err, manga){
         const response = {
@@ -113,7 +113,7 @@ module.exports.fullUpdateOne = function(req,res){
             manga.titles = req.body.titles;
             manga.published = req.body.published;
             manga.status = req.body.status;
-            manga.genres = [req.body.genres];
+            manga.genres = req.body.genres;
             manga.save(function(err, updatedManga){
                 if(err){
                     response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
