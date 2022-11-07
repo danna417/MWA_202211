@@ -1,0 +1,128 @@
+[{
+	"_id": {
+		"$oid": "63672d67aa76b809fe6c41b8"
+	},
+	"titles": {
+		"japanese": "ベルセルク",
+		"english": "Berserk"
+	},
+	"published": 1989,
+	"status": "Ongoing",
+	"genres": [
+		"Action",
+		"Adventure",
+		"Horror",
+		"Fantasy",
+		"Supernatural"
+	],
+	"authors": [
+		{
+			"name": "Miura Kentarou",
+			"role": [
+				"Story",
+				"Art"
+			]
+		},
+		{
+			"name": "Studio Gaga",
+			"role": [
+				"Art"
+			]
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "63672d67aa76b809fe6c41b9"
+	},
+	"titles": {
+		"japanese": "ナナ",
+		"english": "Nana"
+	},
+	"published": 2000,
+	"status": "On Hiatus",
+	"genres": [
+		"Drama",
+		"Romance",
+		"Slice of Life"
+	],
+	"authors": [
+		{
+			"name": "Yazawa Ai",
+			"role": [
+				"Story",
+				"Art"
+			]
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "63672d67aa76b809fe6c41ba"
+	},
+	"titles": {
+		"japanese": "スラムダンク",
+		"english": "Slam Dunk"
+	},
+	"published": 1990,
+	"status": "Completed",
+	"genres": [
+		"School life",
+		"Comedy",
+		"Sports"
+	],
+	"authors": [
+		{
+			"name": "Inoue Takehito",
+			"role": [
+				"Story",
+				"Art"
+			]
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "63685155b6433f74118ea737"
+	},
+	"status": "Completed",
+	"genres": [
+		[
+			[
+				"Adventure",
+				"Sci-Fi",
+				"Time Travel"
+			]
+		]
+	],
+	"authors": [
+		{
+			"name": "Inagaki Riichiro",
+			"role": [
+				"Story"
+			],
+			"_id": {
+				"$oid": "6368585175b9894148d0cf82"
+			}
+		},
+		{
+			"name": "Boichi",
+			"role": [
+				"Art"
+			],
+			"_id": {
+				"$oid": "63686717cb45eeb12faf7881"
+			}
+		}
+	],
+	"__v": 3,
+	"published": 2017,
+	"titles": {
+		"japanese": "ドクターストーン",
+		"english": "Dr Stone",
+		"_id": {
+			"$oid": "63685155b6433f74118ea738"
+		}
+	}
+}]
+
