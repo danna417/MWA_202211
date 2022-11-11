@@ -1,12 +1,44 @@
 const mongoose = require("mongoose");
 const game = mongoose.model(process.env.GAME_MODEL);
 
+_buildGeoSearchQuery = function(req, res, query){
+    const lng = parseFloat(req.query.lng);
+    const lat = parseFloat(req.query.lat);
+    let maxDist = process.env.DEFAULT_GEOSEARCH_MAX_DIST;
+    let minDist = process.env.DEFAULT_GEOSEARCH_MIN_DIST;
+
+    const point = {
+        type: "Point",
+        coordinates: [lat, lng]
+       // coordinates: [lng, lat]
+    }
+        
+ 
+    if(req.query.maxDist && req.query.minDist){
+        maxDist = parseFloat(req.query.maxDist);
+        minDist = parseFloat(req.query.minDist);
+    }
+
+    query = {
+        "publisher.location.coordinates" :{
+            $near: {
+                $geometry: point,
+                $maxDistance : maxDist,
+                $minDisctance : minDist
+            }
+        }
+    };
+
+    return query;
+};
+
 module.exports.getAll = function(req,res){
     console.log("getAll games");
     let offset = parseInt(process.env.DEFAULT_OFFSETT);
     let count = parseInt(process.env.DEFAULT_COUNT);
     let maxCount = parseInt(process.env.MAX_COUNT);
-    
+    let query = {};
+
     if(req.query && req.query.offset){
         offset = parseInt(req.query.offset, parseInt(process.env.DECIMAL_RADIX));
     }
@@ -15,14 +47,19 @@ module.exports.getAll = function(req,res){
     }
     if(count > maxCount) count = maxCount;
 
-    // game.find().skip(offset).limit(count).exec(function(err, games) {
-    game.find().exec(function(err, games) {
+    if(req.query && req.query.lat && req.query.lng) {
+        console.log("lng&lat");
+        _buildGeoSearchQuery(req, res, query);
+    }
+
+    game.find(query).skip(offset).limit(count).exec(function(err, games) {
+    //game.find().exec(function(err, games) {
         const response = {
             status : process.env.OK_STATUS_CODE,
             message : games
         };
         if(err){
-            console.log("error found");
+            console.error("error found", err);
             response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
             response.message = err;
         }else if(!game) {
@@ -182,7 +219,7 @@ module.exports.deleteOne = function(req,res){
         .json(process.env.INVALID_ID_JSON_MSG);
     }
 
-    game.findByIdanDelete(gameId).exec(function(err, deletedgame) {
+    game.findByIdAndDelete(gameId).exec(function(err, deletedgame) {
         const response = {
             status : process.env.UPDATED_DATA_STATUS_CODE,
             message : deletedgame

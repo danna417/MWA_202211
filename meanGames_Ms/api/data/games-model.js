@@ -1,4 +1,15 @@
 const mongoose = require("mongoose");
+const publisherSchema = mongoose.Schema({
+    name: String,
+    location: {
+        coordinates: {
+            type: [Number], //[long, lat]
+            index: "2dsphere"
+        }
+     },
+    country: String,
+    established: Number
+});
 const gameSchema= mongoose.Schema({
     title: {
         type: String,

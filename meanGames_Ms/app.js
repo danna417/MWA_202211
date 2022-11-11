@@ -9,12 +9,19 @@ const express = require("express");
 const routes = require("." + process.env.API_DIR +  process.env.ROUTES_DIR);
 const app = express();
 
-app.use("/", function(req, res, next) {
-    res.header('Access-Control-Allow-Origin',
-    'http://localhost:4200');
-    res.header('Access-Control-Allow-Headers', 'Origin, XRequested-With, Content-Type, Accept');
+// app.use("/", function(req, res, next) {
+//     res.header('Access-Control-Allow-Origin','http://localhost:4200');
+//     res.header('Access-Control-Allow-Headers', 'Origin, XRequested-With, Content-Type, Accept');
+//     next();
+// });
+
+app.use("/", (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
-    });
+});
+
 app.use(express.static(path.join(__dirname,process.env.PUBLIC_DIR)));
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));

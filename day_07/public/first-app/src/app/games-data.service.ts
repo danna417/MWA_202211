@@ -20,5 +20,9 @@ export class GamesDataService {
     return this.http.get<Games>(this.baseUrl + '/game/' + gameId );
 
   }
+
+  public deleteGame(gameId: String) : Observable<Games> {
+     return this.http.delete<Games>(this.baseUrl + '/game/' + gameId );
+  }
 }
 
