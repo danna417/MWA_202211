@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
     })
   }
   onSubmit():void {
-    console.log("submit clicked");
+    console.log("onSubmit clicked");
     console.log(this.registrationForm.value);
     console.log(this.registrationForm.value.name);
     console.log(this.registrationForm.value.username);

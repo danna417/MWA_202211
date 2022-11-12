@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const publisherSchema = mongoose.Schema({
+const publisherSchema = new mongoose.Schema({
     name: String,
     location: {
         coordinates: {
