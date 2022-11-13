@@ -1,0 +1,17 @@
+{
+  "name": "previousexam1",
+  "version": "1.0.0",
+  "description": "practice from scratch",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon --inspect",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Davaamaa",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.2"
+  }
+}

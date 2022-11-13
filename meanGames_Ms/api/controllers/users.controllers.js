@@ -28,10 +28,16 @@ module.exports.register = function(req, res){
 
 module.exports.registerSync = function(req, res){
     console.log("user register Sync request");
+
+    const hashSalt = bcrypt.genSaltSync(parseInt(process.env.NUMBER_OF_ROUND));
+    
+    console.log("salt ", hashSalt);
+    const passHash = bcrypt.hashSync(req.body.password, hashSalt);
+
     const newUser = {
         name : req.body.name,
         username : req.body.username,
-        password : req.body.password
+        password : passHash
     }
 
     user.create(newUser, function(err, user){
@@ -48,32 +54,37 @@ module.exports.registerSync = function(req, res){
     })
 }
 
-module.exports.login = function(req, res) {
-console.log("Login request");
-let username = req.body.username;
-let password = req.body.password;
-const response = {
-status : process.env.OK_STATUS_CODE,
-message : "login Successfull"
-}
-user.findOne({username:username}).exec(function(err, user){
-if(err) {
-console.error("Login error", err);
-response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-    response.message = "Error";
-
-}else{
-    if(!user) {
-        response.status = 400;
-    response.message = "Incorrect username or password";
-    }else{
-        console.error("todo check password & JWT");
-        //use jSON Web Token Module
-        //todo encrption
-
+module.exports.loginSync = function(req, res) {
+    console.log("Login request");
+    
+    let username = req.body.username;
+    let password = req.body.password;
+    const response = {
+        status : process.env.OK_STATUS_CODE,
+        message : process.env.LOGIN_SUCCESSFUL
     }
-}
-res.status(parseInt(response.status)).json(response.message);
+    user.findOne({username:username}).exec(function(err, user){
+        if(err) {
+            console.error("Login error", err);
+            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
+            response.message = "Error";
+
+        }else{
+            if(!user) {
+                response.status = process.env.INCORRECT_STATUS_CODE;
+                response.message = "Incorrect username or password";
+            }else{
+                if(bcrypt.compareSync(password, user.password)){
+                    console.log("todo check password & JWT");
+                }else{
+                    console.error("password mismatch");
+                    response.status = process.env.INCORRECT_STATUS_CODE;
+                    response.message = "Incorrect username or password";
+                }
+                //use jSON Web Token Module
+            }
+        }
+    res.status(parseInt(response.status)).json(response.message);
 
 })
 }

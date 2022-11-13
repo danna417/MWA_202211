@@ -16,10 +16,10 @@ router.route("/game/:gameId")
     .delete(gameControllers.deleteOne);
 
 router.route("/users")
-    .post(usersControllers.register);
+    .post(usersControllers.registerSync);
 
 
 router.route("/users/login")
-    .post(usersControllers.login);
+    .post(usersControllers.loginSync);
 
 module.exports = router;

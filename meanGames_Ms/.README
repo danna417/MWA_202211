@@ -1,0 +1,17 @@
+1. initialize the app 
+npm init
+2. install express
+npm install express
+3.install other necessary modules
+npm install dotenv
+npm install mongoose
+
+4.create directories
+mkdir api
+cd api
+mkdir controller
+mkdir data
+mkdir routes
+
+5.angular new app
+ng new pre-app --skip-git=true --skip-tests=true --directory public/pre-app --defaults=true
