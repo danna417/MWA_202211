@@ -1,0 +1,17 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    Search by born country <input formControlName="country" type="text"> 
+    <button>Search</button>
+</form>
+
+<br>
+<ul>
+    <li *ngFor="let winner of winners">
+    <a routerLink="/winner/{{winner._id}}">
+          {{winner.firstname}} , {{winner.year}}
+    </a>
+    </li>
+</ul>
+
+<button (click) = 'onPrev()'>Previous</button>
+{{page}}
+<button (click) = 'onNext()'>Next</button>
