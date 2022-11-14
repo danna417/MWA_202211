@@ -18,6 +18,13 @@ npm i dotenv
 npm i bcrypt
 ```
 
+### ENCRYPTION
+```
+1. Generate Salt
+2. Hash pass
+3. CompareSync
+```
+
 ## @angular/cli commands
 ```
 ng new app-name --skip-git=true --skip-tests=true –-directory public\app-name –-defaults=true
