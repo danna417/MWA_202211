@@ -1,0 +1,15 @@
+<p>Search page</p>
+
+<form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    Name: <input type="text" name="name" formControlName="name">
+    <button>Search</button>
+</form>
+<br>
+
+<ul>
+    <li *ngFor="let e of employees">
+        <a routerLink="/employees/{{e._id}}">
+            {{e.id}} - {{e.name}}
+        </a>
+    </li>
+</ul>

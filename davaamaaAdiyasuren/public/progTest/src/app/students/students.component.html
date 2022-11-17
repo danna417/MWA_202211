@@ -1,0 +1,8 @@
+<ul>
+    <li *ngFor="let stu of students">
+        
+        <a routerLink="/student/{{stu._id}}">
+            {{stu.LastName}}, {{stu.FirstName}} - {{stu.Major}}
+    </a>
+    </li>
+</ul>
