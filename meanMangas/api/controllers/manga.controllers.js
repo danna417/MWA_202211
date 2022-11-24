@@ -1,65 +1,52 @@
 const mongoose = require("mongoose");
 const Manga = mongoose.model(process.env.MANGA_MODEL);
+const commonUtil = require('./utilties').Common;
+
 
 module.exports.getAll = function(req,res){
-    console.log("getAll mangas");
-    let offset = parseInt(process.env.DEFAULT_OFFSETT);
-    let count = parseInt(process.env.DEFAULT_COUNT);
-    let maxCount = parseInt(process.env.MAX_COUNT);
-    
-    if(req.query && req.query.offset){
-        offset = parseInt(req.query.offset, parseInt(process.env.DECIMAL_RADIX));
-    }
-    if(req.query && req.query.count){
-        count = parseInt(req.query.count, parseInt(process.env.DECIMAL_RADIX));
-    }
-    if(count > maxCount) count = maxCount;
+    //commonUtil._debugLog("getAll");
 
-    Manga.find().skip(offset).limit(count).exec(function(err, manga) {
-        const response = {
-            status : process.env.OK_STATUS_CODE,
-            message : manga
-        };
-        if(err){
-            console.log("error found");
-            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-            response.message = err;
-        }else if(!manga) {
-            console.log("game not found");
-            response.status = process.env.NOT_FOUND_STATUS_CODE;
-            response.message = process.env.MANGA_NOT_FOUND_JSON_MSG;
-        }
-        res.status(parseInt(response.status)).json(response.message);
+    const response = {
+        status : process.env.OK_STATUS_CODE,
+        message : {}
+    };
+    const _query = _queryBuilder(req);
+    const _pageVal = _paginationBuilder(req);
 
-    });
+    Manga.find(_query).skip(_pageVal.offset).limit(_pageVal.count).exec()
+   // .then(() => {})
+    .then((manga) => response.message = manga)
+    .catch((err) => commonUtil._errorHandler(err,response))
+    .finally(() => commonUtil._sendResponse(res, response));
 };
 
-
+// const _isMangaExist = new Promise ((resolve, reject, manga) => {
+//     if(manga){
+//         resolve();
+//     }else{
+//         reject();
+//     } 
+// })
 module.exports.getOne = function(req,res){
-    console.log("getOne manga");
+    commonUtil._debugLog("getOne manga");
+
     const mangaId = req.params.mangaId;
-    if(!mongoose.isValidObjectId(mangaId)){
-        res.status(parseInt(process.env.NOT_FOUND_STATUS_CODE))
-            .json(process.env.INVALID_ID_JSON_MSG);
-    }
 
-    Manga.findById(mangaId).exec(function(err, manga) {
-        const response = {
-            status : process.env.OK_STATUS_CODE,
-            message : manga
-        };
-        if(err){
-            console.log("error found");
-            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-            response.message = err;
-        }else if(!manga) {
-            console.log("manga not found");
-            response.status = process.env.NOT_FOUND_STATUS_CODE;
-            response.message = process.env.MANGA_NOT_FOUND_JSON_MSG;
-        }
-        res.status(parseInt(response.status)).json(response.message);
+    const response = {
+        status : process.env.OK_STATUS_CODE,
+        message : {}
+    };
 
-    });
+    // if(!mongoose.isValidObjectId(mangaId)){
+    //     response.status = process.env.NOT_FOUND_STATUS_CODE;
+    //     response.message = process.env.INVALID_ID_JSON_MSG;
+    //     commonUtil._sendResponse(res, response);
+    // }
+
+    Manga.findById(mangaId).exec()
+    .then((manga) => {response.message = manga;})
+    .catch((err) => {commonUtil._errorHandler(err, response);})
+    .finally(() => {commonUtil._sendResponse(res, response);});
 };
 
 module.exports.addOne = function(req,res){
@@ -83,6 +70,7 @@ module.exports.addOne = function(req,res){
         res.status(parseInt(response.status)).json(response.message);
     })
 };
+
 
 module.exports.fullUpdateOne = function(req,res){
     console.log("fullUpdateOne manga");
@@ -181,7 +169,7 @@ module.exports.deleteOne = function(req,res){
         .json(process.env.INVALID_ID_JSON_MSG);
     }
 
-    Manga.findByIdanDelete(mangaId).exec(function(err, deletedManga) {
+    Manga.findByIdAndDelete(mangaId).exec(function(err, deletedManga) {
         const response = {
             status : process.env.UPDATED_DATA_STATUS_CODE,
             message : deletedManga
@@ -199,3 +187,36 @@ module.exports.deleteOne = function(req,res){
 
     });
 };
+
+/*Internal Functions */
+
+const _queryBuilder = function(req){
+    let query = {};
+    if (req.query && req.query.title){
+        query = {title : new RegExp(req.query.title)};
+    }
+    return query;
+}
+
+
+const _paginationBuilder = function(req) {
+    const _pageVal = {
+        offset:  parseInt(process.env.DEFAULT_OFFSET),
+        count: parseInt(process.env.DEFAULT_COUNT)
+    }
+    
+    const maxCount = parseInt(process.env.MAX_COUNT);
+  
+    if (req.query && req.query.offset) {
+        _pageVal.offset = parseInt(req.query.offset, parseInt(process.env.DECIMAL_RADIX));
+    }
+
+    if(req.query && req.query.count) {
+        _pageVal.count = parseInt(req.query.count , parseInt(process.env.DECIMAL_RADIX));
+    }
+
+    if(_pageVal.count > maxCount) _pageVal.count = maxCount;
+    
+    return _pageVal;
+    
+}

@@ -4,15 +4,20 @@
   "description": "My Manga history application",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev" : "nodemon --inspect",
+    "start": "npm run startBackend | npm run startFrontend",
+    "startBackend": "node app.js",
+    "startFrontend": "cd public/php-app && npm start",
+    "dev": "nodemon -- inspect",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@auth0/angular-jwt": "^5.1.0",
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.11.0",
     "mongoose": "^6.7.1"
   }

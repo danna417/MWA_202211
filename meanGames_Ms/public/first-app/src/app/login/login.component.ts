@@ -7,8 +7,8 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string = "Test";
-  password: string = "t123";
+  username: string = "";
+  password: string = "";
 
   @ViewChild("loginForm")
   loginForm!: NgForm;

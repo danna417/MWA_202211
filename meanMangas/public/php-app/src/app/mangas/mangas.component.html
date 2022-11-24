@@ -1,0 +1,15 @@
+
+<form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    Search by born title <input formControlName="title" type="text"> 
+    <button>Search</button>
+</form>
+
+The list of Mangas are:<br/>
+
+<ul>
+    <li *ngFor="let manga of mangas">
+        <a routerLink="/manga/{{manga._id}}">{{manga.titles.english}} ({{manga.published}})</a>
+    </li>
+</ul>
+
+<button *ngIf="authService.isLoggedIn" routerLink="add">Add manga</button>

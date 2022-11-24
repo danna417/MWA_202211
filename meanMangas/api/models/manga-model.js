@@ -31,4 +31,4 @@ const mangaSchema = mongoose.Schema({
 });
 
 
-mongoose.model(process.env.MANGA_MODEL, mangaSchema, process.env.COLLECTION_NAME);
+mongoose.model(process.env.MANGA_MODEL, mangaSchema, process.env.MANGA_COLLECTION);

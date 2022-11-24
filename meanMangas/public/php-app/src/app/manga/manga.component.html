@@ -1,0 +1,20 @@
+Title: <br>
+japaneseTitle : {{manga.titles.japanese}}<br>
+englishTitle : {{manga.titles.english}}<br>
+published : {{manga.published}}<br>
+status : {{manga.status}}<br>
+authors : 
+
+
+<span *ngFor="let author of authors">
+    <a *ngIf="authService.isLoggedIn" routerLink="author/{{author._id}}">{{author.name}} ({{author.role}})</a> 
+    <span *ngIf="!authService.isLoggedIn">{{author.name}} ({{author.role}})</span> 
+</span>
+
+<br>
+<br>
+
+<form *ngIf="authService.isLoggedIn">
+
+    <button *ngIf="authService.isLoggedIn" (click)="onDeleteManga()">Delete</button>
+</form>

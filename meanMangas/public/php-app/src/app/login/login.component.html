@@ -1,0 +1,17 @@
+<div *ngIf="!authService.isLoggedIn" >
+<form (ngSubmit)="onLogin()">
+    <div >
+        Username: <input type="text" name="username" [(ngModel)]="username">
+        Password: <input type="text" name="password" [(ngModel)]="password">
+    
+        <button>Login</button>   
+    </div>
+    
+</form>
+</div>
+<div *ngIf="authService.isLoggedIn">
+    {{username}} Hello! 
+    <button (click)="onLogOut()">Logout</button>
+</div>
+
+

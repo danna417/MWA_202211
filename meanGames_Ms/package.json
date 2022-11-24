@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --inspect",
+    "start": "npm run back | npm run front",
+    "back" : "nodemon --inspect",
+    "front" : "cd public/first-app && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

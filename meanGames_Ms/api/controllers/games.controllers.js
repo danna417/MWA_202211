@@ -51,25 +51,42 @@ module.exports.getAll = function(req,res){
         console.log("lng&lat");
         _buildGeoSearchQuery(req, res, query);
     }
-
-    game.find(query).skip(offset).limit(count).exec(function(err, games) {
-    //game.find().exec(function(err, games) {
-        const response = {
-            status : process.env.OK_STATUS_CODE,
-            message : games
+    const response = {
+            status : parseInt(process.env.OK_STATUS_CODE),
+            message : {}
         };
-        if(err){
-            console.error("error found", err);
-            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-            response.message = err;
-        }else if(!game) {
-            console.log("game not found");
-            response.status = process.env.NOT_FOUND_STATUS_CODE;
-            response.message = process.env.GAME_NOT_FOUND_JSON_MSG;
-        }
-        res.status(parseInt(response.status)).json(response.message);
 
-    });
+    game.find(query).skip(offset).limit(count).exec()
+        .catch(err => {
+            console.error("error found", err);
+            response.status = parseInt(process.env.INTERNAL_ERROR_STATUS_CODE);
+            response.message = err;
+        })
+        .then(games => {
+            response.message = games; 
+        })
+        .finally(() => {
+            res.status(response.status).json(response.message);
+        });
+
+    //     function(err, games) {
+    // //game.find().exec(function(err, games) {
+    //     const response = {
+    //         status : process.env.OK_STATUS_CODE,
+    //         message : games
+    //     };
+    //     if(err){
+    //         console.error("error found", err);
+    //         response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
+    //         response.message = err;
+    //     }else if(!game) {
+    //         console.log("game not found");
+    //         response.status = process.env.NOT_FOUND_STATUS_CODE;
+    //         response.message = process.env.GAME_NOT_FOUND_JSON_MSG;
+    //     }
+    //     res.status(parseInt(response.status)).json(response.message);
+
+    // });
 };
 
 
