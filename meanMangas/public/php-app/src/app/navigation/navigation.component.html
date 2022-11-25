@@ -1,6 +1,26 @@
-<nav>
+<!-- <nav>
     <button routerLink="/">Home</button>
     <button routerLink="/mangas">Mangas</button>
     <button *ngIf="!authService.isLoggedIn" routerLink="/user/register">Register</button>
-    <app-login></app-login>
+    
+</nav> -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
+    <div class="container">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a routerLink="/" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/mangas" class="nav-link">Mangas</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="!authService.isLoggedIn" routerLink="/user/register"class="nav-link">Register</a>
+            </li>
+        </ul>
+        <app-login></app-login>
+    </div>
 </nav>
+
+
+

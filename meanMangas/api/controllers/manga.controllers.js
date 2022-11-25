@@ -45,7 +45,7 @@ module.exports.getOne = function(req,res){
 
     Manga.findById(mangaId).exec()
     .then((manga) => {response.message = manga;})
-    .catch((err) => {commonUtil._errorHandler(err, response);})
+    .catch((err) => {commonUtil._handleError(err, response);})
     .finally(() => {commonUtil._sendResponse(res, response);});
 };
 
@@ -57,13 +57,14 @@ module.exports.addOne = function(req,res){
         status : req.body.status,
         genres : req.body.genres
     }
+
     Manga.create(newManga, function(err, manga){
         const response = {
             status : process.env.NEW_DATA_STATUS_CODE,
             message : manga
         }
         if(err) {
-            console.log("Error creating a new manga");
+            console.log("Error creating a new manga", err);
             response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
             response.message = err;
         }

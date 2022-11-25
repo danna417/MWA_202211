@@ -1,3 +1,4 @@
+
 Title: <br>
 japaneseTitle : {{manga.titles.japanese}}<br>
 englishTitle : {{manga.titles.english}}<br>
@@ -5,16 +6,49 @@ published : {{manga.published}}<br>
 status : {{manga.status}}<br>
 authors : 
 
-
-<span *ngFor="let author of authors">
+<ul>
+<li *ngFor="let author of authors">
+    
     <a *ngIf="authService.isLoggedIn" routerLink="author/{{author._id}}">{{author.name}} ({{author.role}})</a> 
     <span *ngIf="!authService.isLoggedIn">{{author.name}} ({{author.role}})</span> 
-</span>
+</li>
+</ul>
 
 <br>
 <br>
+<div  class="row mt-4 ms-4">
+<form *ngIf="authService.isLoggedIn" (ngSubmit)="onUpdate()">
+    <div class="ms-4 mb-3 row">
+        <label for="japaneseTitle" class="col-sm-1 col-form-label">Japanese Title</label>
+        <div class="col-sm-10">
+            <input class="form-control w-25" type="text" id="japaneseTitle" name="japaneseTitle" [(ngModel)]="manga.titles.japanese">
+        </div>
+    </div>
+    <div class="ms-4 mb-3 row">
+        <label for="englishTitle" class="col-sm-1 col-form-label">English Title</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control w-25" id="englishTitle" name="englishTitle" [(ngModel)]="manga.titles.japanese">
+        </div>
+    </div>
+    <div class="ms-4 mb-3 row">
+        <label for="published" class="col-sm-1 col-form-label">Published Year</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control w-25" id="published" name="published" [(ngModel)]="manga.published">
+        </div>
+    </div>
+    <div class="ms-4 mb-3 row">
+        <label for="englishTitle" class="col-sm-1 col-form-label">Status</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control w-25" id="englishTitle" name="englishTitle" [(ngModel)]="manga.status">
+        </div>
+    </div>
 
-<form *ngIf="authService.isLoggedIn">
+    <div class="ms-4 w-25">
+        <button class="btn btn-sm btn-success" type="submit">Add Achievment</button>
+    </div>
+</form>
+</div>
+
+    <button *ngIf="authService.isLoggedIn">Update Manga Info</button>
 
     <button *ngIf="authService.isLoggedIn" (click)="onDeleteManga()">Delete</button>
-</form>

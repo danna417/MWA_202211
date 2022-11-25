@@ -31,15 +31,16 @@ export class AddMangaComponent implements OnInit {
   }
 
   onAdd() : void{
+    console.log("onADD starts")
     this.manga = this.addMangaForm.value;
 
     this.manga.titles = {
       japanese: this.addMangaForm.value.japaneseTitle, 
       english: this.addMangaForm.value.englishTitle
     };
-
-    this.mangaDataServie.addManga(this.manga).subscribe(manga => {
-      this.router.navigate(["manga", manga._id])
+    
+    this.mangaDataServie.addManga(this.manga).subscribe(newmanga => {
+      this.router.navigate(["manga/", newmanga._id])
     })
   }
 

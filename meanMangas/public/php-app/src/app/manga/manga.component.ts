@@ -50,5 +50,15 @@ export class MangaComponent implements OnInit {
       this.router.navigate(["/mangas"])
     });
   }
+  onUpdate(): void{
+    
+    const mangaId = this.route.snapshot.params['mangaId'];
 
+    console.log("deleteMAnga request", mangaId);
+    this.mangaDataService.deleteManga(mangaId).subscribe(manga => {
+      console.log("deleted manga: ", manga);
+      
+      this.router.navigate(["/mangas"])
+    });
+  }
 }

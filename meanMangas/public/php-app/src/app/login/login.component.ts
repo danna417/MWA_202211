@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
       username: this.username,
       password: this.password
     }).subscribe({
-      next: (response) => {this._loginPrep(response)},
+      next: (response) => {console.log(response); this._loginPrep(response)},
       error: (err) => {console.log(err)},
     })
  
@@ -49,8 +49,8 @@ export class LoginComponent implements OnInit {
     //   localStorage.setItem("token", response.token);
     // })
   }
-  private _loginPrep(response : any){
-  
+  private _loginPrep(response : LoginResponse){
+    console.log(response);
     if (response.success) {
       localStorage.setItem("token", response.token);
       this.router.navigate([""]);

@@ -1,17 +1,9 @@
-<div *ngIf="!authService.isLoggedIn" >
-<form (ngSubmit)="onLogin()">
-    <div >
-        Username: <input type="text" name="username" [(ngModel)]="username">
-        Password: <input type="text" name="password" [(ngModel)]="password">
-    
-        <button>Login</button>   
-    </div>
-    
+<form *ngIf="!authService.isLoggedIn" class="form-inline login-form" (ngSubmit)="onLogin()" >
+        <input type="text" class="" name="username" placeholder="Username" [(ngModel)]="username">
+        <input type="password" class="" name="password" placeholder="Password" [(ngModel)]="password">
+    <button type="submit" class="btn btn-info mb-2">Log In</button>
 </form>
-</div>
-<div *ngIf="authService.isLoggedIn">
-    {{username}} Hello! 
-    <button (click)="onLogOut()">Logout</button>
-</div>
-
-
+<span *ngIf="authService.isLoggedIn " class="navbar-text">
+    Hello!  {{username}} 
+    <button (click)="onLogOut()" type="button" class="btn btn-secondary">Logout</button>
+</span>

@@ -7,12 +7,14 @@ import { AuthenticationService } from '../authentication.service';
   styleUrls: ['./author.component.css']
 })
 export class AuthorComponent implements OnInit {
-
+  author!: Author;
   constructor(public authService : AuthenticationService) { }
 
   ngOnInit(): void {
   }
+  onEditAuthor():void {
 
+  }
 }
 
 export class Author{

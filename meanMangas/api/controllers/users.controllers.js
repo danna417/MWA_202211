@@ -42,7 +42,7 @@ const _createNewUserObject = (req, passwordHash) => {
 }
 
 const _hashPassword = (password, salt) => {
-    // commonUtil._debugLog("_hashPassword() executing");
+     commonUtil._debugLog("_hashPassword() executing");
     return new Promise((resolve, reject) => {
         bcrypt.hash(password, salt)
                 .then(passwordHash => resolve(passwordHash))
@@ -51,7 +51,7 @@ const _hashPassword = (password, salt) => {
 }
 
 const _createUser = (req, passwordHash) => {
-    // commonUtil._debugLog("_createUser() executing");
+     commonUtil._debugLog("_createUser() executing");
     return new Promise((resolve, reject) => {
         const newUser = _createNewUserObject(req, passwordHash);
         User.create(newUser)
@@ -76,6 +76,7 @@ const _checkPasswordMatch = (plainPassword, user) => {
 }
 
 const _checkUserExist = (statusOk, user, response) => {
+    commonUtil._debugLog("_checkUserExist() executing");
     return new Promise((resolve, reject) => {
         if (!user) {
             commonUtil._updateResponse(process.env.NOT_FOUND_STATUS_CODE, process.env.USER_OR_PWD_WRONG_MSG, response)

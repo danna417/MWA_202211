@@ -27,7 +27,7 @@ module.exports._updateResponse = (status, message, response) => {
 module.exports._handleError = (err, response) => {
     this._debugErrorLog(err);
     response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-    response.msg = err;
+    response.message = err;
 }
 
 module.exports._sendResponse = (res, response) => {
@@ -37,7 +37,7 @@ module.exports._sendResponse = (res, response) => {
 module.exports._createDefaultResponse = (status, message) => {
     return {
         status: status,
-        msg: message
+        message: message
     }
 }
 

@@ -28,13 +28,16 @@ export class MangaDataService {
 
   public deleteManga(mangaId: string): Observable<Manga> {
     const url: string= this.apiBaseUrl + "/manga/" + mangaId;
+    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")};
     
-    return this.http.delete<Manga>(url);
+    return this.http.delete<Manga>(url, { headers });
   }
   public addManga(newManga : Manga): Observable<Manga> {
+    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")}
+    console.log(headers);
     const url: string= this.apiBaseUrl + "/manga";
     
-    return this.http.post<Manga>(url, newManga);
+    return this.http.post<Manga>(url, newManga,  { headers });
   }
 
 //Todo 
