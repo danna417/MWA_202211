@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const mangaControllers = require(".." + process.env.MANGA_CONTROLLER_DIR);
 const authorControllers = require(".." + process.env.AUTHOR_CONTROLLER_DIR);
-const authController = require('../controllers/authentication.controllers');
+const authController = require('..' + process.env.AUTHENTICATION_CONTROLLER_DIR);
 
 router.route("/")
     .get(mangaControllers.getAll)

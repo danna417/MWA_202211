@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { AuthorDataService } from '../author-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-author',
@@ -14,6 +14,7 @@ export class AuthorComponent implements OnInit {
   isAuthorEdit: boolean = false;
   mangaId!: string;
   authorId!: string;
+  env = environment;
   constructor(
     private authorDataService : AuthorDataService,
     private router : Router,

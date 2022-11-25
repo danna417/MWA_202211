@@ -1,11 +1,12 @@
 <div *ngIf="!isupdateMode" class="row ms-4">
     <h1>Manga Detail</h1>
     <div class="col-sm">
-    Japanese Title : {{manga.titles.japanese}}<br>
-    English Title : {{manga.titles.english}}<br>
-    published : {{manga.published}}<br>
-    status : {{manga.status}}<br>
-    authors : 
+        {{env.text_title_jpn}} : {{manga.titles.japanese}}<br>
+        {{env.text_title_eng}} : {{manga.titles.english}}<br>
+        {{env.text_published}} : {{manga.published}}<br>
+        {{env.text_status}} : {{manga.status}}<br>
+        {{env.text_genre}} : {{manga.genres}}<br>
+        {{env.text_authors}} : 
     <ul>
         <li *ngFor="let author of authors">
             

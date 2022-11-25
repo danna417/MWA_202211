@@ -16,6 +16,8 @@ import { FooterComponent } from './footer/footer.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AddMangaComponent } from './add-manga/add-manga.component';
 import { RegisterComponent } from './register/register.component';
+import { environment } from 'src/environments/environment';
+
 
 @NgModule({
   declarations: [
@@ -38,28 +40,28 @@ import { RegisterComponent } from './register/register.component';
     FormsModule,
     RouterModule.forRoot([
       {
-        path : '',
+        path : environment.nav_home,
         component : HomeComponent
       },
       {
-        path: "user/register",
+        path: environment.nav_register,
         component : RegisterComponent
       },
       {
-        path: 'mangas',
+        path: environment.nav_mangas,
         component : MangasComponent
       },
       {
-        path: "mangas/add",
+        path: environment.nav_mangas_add,
         component : AddMangaComponent
       }
       ,
       {
-        path: 'manga/:mangaId',
+        path: environment.nav_manga + ":" + environment.param_mangaId,
         component : MangaComponent
       },
       {
-        path: "manga/:mangaId/author/:authorId",
+        path:  environment.nav_manga + ":" + environment.param_mangaId + environment.nav_author + ":" + environment.param_authorId,
         component : AuthorComponent
       }
       ,

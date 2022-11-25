@@ -1,6 +1,3 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
 
 export const environment = {
   production: false,
@@ -17,13 +14,13 @@ export const environment = {
   nav_manga: "manga/",
   nav_register: "register",
   param_mangaId: "mangaId",
-  param_authorId: "authorId",
+  param_auhtorId: "authorId",
   token_bearer: "Bearer ",
   header_authorization: "authorization ",
   token: "token",
   text_welcome: "Welcome to MEAN Manga",
   text_welcome_Additional: "You can find interesting Manga List here",
-  text_page_not_found: "Your Requested Page Is Not Found",
+  text_page_not_found: "Page not found",
   text_home: "Home",
   text_mangas: "mangas",
   text_register: "Register",
@@ -43,7 +40,6 @@ export const environment = {
   text_edit: "Edit",
   text_update: "Update",
   text_cancel: "Cancel",
-  text_add: "Add",
   text_add_author: "Add Author",
   text_delete_manga: "Delete Manga",
   text_search_title: "Search By Title",
@@ -55,12 +51,3 @@ export const environment = {
   query_count: "count=",
   query_name: "name=",
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

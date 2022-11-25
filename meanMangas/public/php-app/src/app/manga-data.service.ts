@@ -3,54 +3,58 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Manga } from './mangas/mangas.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MangaDataService {
-  private apiBaseUrl: string= "http://localhost:3001/api"
+  private apiBaseUrl: string= environment.base_url;
 
   constructor(private http:HttpClient) { }
 
   public getMangas(): Observable<Manga[]> {
 
-    const url: string= this.apiBaseUrl + "/manga";
+    const url: string= this.apiBaseUrl + environment.manga_service_url;
     
     return this.http.get<Manga[]>(url);
   }
 
   public getManga(mangaId: string): Observable<Manga> {
-    const url: string= this.apiBaseUrl + "/manga/" + mangaId;
-   console.log("getOne before be ", url)
-    
+    const url: string= this.apiBaseUrl + environment.manga_service_url + mangaId;
     return this.http.get<Manga>(url);
   }
 
   public deleteManga(mangaId: string): Observable<Manga> {
-    const url: string= this.apiBaseUrl + "/manga/" + mangaId;
-    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")};
+    const url: string= this.apiBaseUrl + environment.manga_service_url + mangaId;
+    const headers = this._buildHeader();
     
     return this.http.delete<Manga>(url, { headers });
   }
   public addManga(newManga : Manga): Observable<Manga> {
-    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")}
-    const url: string= this.apiBaseUrl + "/manga";
+    const headers = this._buildHeader();
+    const url: string= this.apiBaseUrl + environment.manga_service_url;
     
     return this.http.post<Manga>(url, newManga,  { headers });
   }
 
   public UpdateMangaPartially(mangaId: string, updtValue:Object): Observable<Manga> {
-    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")}
-    const url: string= this.apiBaseUrl + "/manga/" + mangaId;
+    const headers = this._buildHeader();
+    const url: string= this.apiBaseUrl + environment.manga_service_url + mangaId;
     
     return this.http.patch<Manga>(url, updtValue , { headers });
   }
 
   public UpdateMangaFully(mangaId: String, updtManga:Manga): Observable<Manga> {
-    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")}
-    const url: string= this.apiBaseUrl + "/manga/" + mangaId;
+    const headers = this._buildHeader();
+
+    const url: string= this.apiBaseUrl + environment.manga_service_url + mangaId;
     
     return this.http.put<Manga>(url, updtManga , { headers });
   }
   
+private _buildHeader(){
+  //authorization can not be read from environment
+ return { 'authorization' : environment.token_bearer + localStorage.getItem(environment.token)}
+}
 }

@@ -5,192 +5,79 @@ const commonUtil = require('./utilties').Common;
 
 module.exports.getAll = function(req,res){
     //commonUtil._debugLog("getAll");
+    const response = commonUtil._buildResBody(process.env.OK_STATUS_CODE, []);
 
-    const response = {
-        status : process.env.OK_STATUS_CODE,
-        message : {}
-    };
     const _query = _queryBuilder(req);
     const _pageVal = _paginationBuilder(req);
 
-    Manga.find(_query).skip(_pageVal.offset).limit(_pageVal.count).exec()
-   // .then(() => {})
-    .then((manga) => response.message = manga)
-    .catch((err) => commonUtil._errorHandler(err,response))
+    Manga.find(_query).skip(_pageVal.offset).limit(_pageVal.count)
+    .then((mangas) => commonUtil._checkMangaAndUpdateResponse(mangas, response))
+    .catch((err) => commonUtil._handleError(err,response))
     .finally(() => commonUtil._sendResponse(res, response));
 };
 
-// const _isMangaExist = new Promise ((resolve, reject, manga) => {
-//     if(manga){
-//         resolve();
-//     }else{
-//         reject();
-//     } 
-// })
 module.exports.getOne = function(req,res){
     commonUtil._debugLog("getOne manga");
-
     const mangaId = req.params.mangaId;
-
-    const response = {
-        status : process.env.OK_STATUS_CODE,
-        message : {}
-    };
-
-    // if(!mongoose.isValidObjectId(mangaId)){
-    //     response.status = process.env.NOT_FOUND_STATUS_CODE;
-    //     response.message = process.env.INVALID_ID_JSON_MSG;
-    //     commonUtil._sendResponse(res, response);
-    // }
-
+    const response = commonUtil._buildResBody(process.env.UPDATED_DATA_STATUS_CODE, []);
+    
+    commonUtil._isValidMangaId(res, response, mangaId);
+    
     Manga.findById(mangaId).exec()
-    .then((manga) => {response.message = manga;})
+    .then((manga) => commonUtil._checkMangaAndUpdateResponse(manga, response))
     .catch((err) => {commonUtil._handleError(err, response);})
     .finally(() => {commonUtil._sendResponse(res, response);});
 };
 
 module.exports.addOne = function(req,res){
-    console.log("MANGA addOne request");
-    const newManga = {
-        titles : req.body.titles,
-        published : req.body.published,
-        status : req.body.status,
-        genres : req.body.genres
-    }
+    commonUtil._debugLog("MANGA addOne request");
+    const newManga = _newMangaObjectBuilder(req.body);
+    const response = commonUtil._buildResBody(process.env.NOT_FOUND_STATUS_CODE, []);
 
-    Manga.create(newManga, function(err, manga){
-        const response = {
-            status : process.env.NEW_DATA_STATUS_CODE,
-            message : manga
-        }
-        if(err) {
-            console.log("Error creating a new manga", err);
-            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-            response.message = err;
-        }
-        res.status(parseInt(response.status)).json(response.message);
-    })
+    Manga.create(newManga)
+    .then((manga) => commonUtil._updateResponse(process.env.NEW_DATA_STATUS_CODE,manga))
+    .catch((err) => {commonUtil._handleError(err, response);})
+    .finally(() => {commonUtil._sendResponse(res, response);});
 };
 
 
 module.exports.fullUpdateOne = function(req,res){
-    console.log("fullUpdateOne manga");
+    commonUtil._debugLog(this.name)
     const mangaId = req.params.mangaId;
+    const response = commonUtil._buildResBody(process.env.UPDATED_DATA_STATUS_CODE, []);
 
-    if(!mongoose.isValidObjectId(mangaId)){
-        res.status(parseInt(process.env.NOT_FOUND_STATUS_CODE))
-            .json(process.env.INVALID_ID_JSON_MSG);
-    }
+    commonUtil._isValidMangaId(res, response, mangaId);
 
-    Manga
-        .findById(mangaId)
-        .exec(function(err, manga) {
-        const response = {
-            status : process.env.UPDATED_DATA_STATUS_CODE,
-            message : manga
-        };
-        if(err){
-            console.log("error found");
-            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-            response.message = err;
-        }else if(!manga) {
-            console.log("manga not found");
-            response.status = process.env.NOT_FOUND_STATUS_CODE;
-            response.message = process.env.MANGA_NOT_FOUND_JSON_MSG;
-        }
-        if(manga){
-            manga.titles = req.body.titles;
-            manga.published = req.body.published;
-            manga.status = req.body.status;
-            manga.genres = req.body.genres;
-            manga.save(function(err, updatedManga){
-                if(err){
-                    response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-                    response.message = err;
-                }else {
-                    response.message = updatedManga;
-                }
-            });
-        }
-        res.status(parseInt(response.status)).json(response.message);
+   _updateManga(mangaId, req,res, response, false);
 
-    });
 };
 
 module.exports.partialUpdateOne = function(req,res){
-    console.log("partial manga");
+    commonUtil._debugLog(this.name)
     const mangaId = req.params.mangaId;
-
-    if(!mongoose.isValidObjectId(mangaId)){
-        res.status(parseInt(process.env.NOT_FOUND_STATUS_CODE))
-            .json(process.env.INVALID_ID_JSON_MSG);
-    }
-
-    Manga
-        .findById(mangaId)
-        .exec(function(err, manga) {
-        const response = {
-            status : process.env.UPDATED_DATA_STATUS_CODE,
-            message : manga
-        };
-        if(err){
-            console.log("error found");
-            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-            response.message = err;
-        }else if(!manga) {
-            console.log("manga not found");
-            response.status = process.env.NOT_FOUND_STATUS_CODE;
-            response.message = process.env.MANGA_NOT_FOUND_JSON_MSG;
-        }
-        if(manga){
-            if(req.body.titles) manga.titles = req.body.titles;
-            if(req.body.published) manga.published = req.body.published;
-            if(req.body.status) manga.status = req.body.status;
-            if(req.body.genres) manga.genres = [req.body.genres];
-            manga.save(function(err, updatedManga){
-                if(err){
-                    response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-                    response.message = err;
-                }else {
-                    response.message = updatedManga;
-                }
-            });
-        }
-        res.status(parseInt(response.status)).json(response.message);
-
-    });
+    const response = commonUtil._buildResBody(process.env.UPDATED_DATA_STATUS_CODE, []);
+   
+    commonUtil._isValidMangaId(res, response, mangaId);
+   
+    _updateManga(mangaId, req, res,response, true);
 };
 
 module.exports.deleteOne = function(req,res){
-    console.log("MANGA deleteOne request");
+    
+    commonUtil._debugLog(this.name)
     const mangaId = req.params.mangaId;
-    if(!mongoose.isValidObjectId(mangaId)){
-        res
-        .status(parseInt(process.env.NOT_FOUND_STATUS_CODE))
-        .json(process.env.INVALID_ID_JSON_MSG);
-    }
+    const response = commonUtil._buildResBody(process.env.UPDATED_DATA_STATUS_CODE, []);
+   
+    commonUtil._isValidMangaId(res, response, mangaId);
 
-    Manga.findByIdAndDelete(mangaId).exec(function(err, deletedManga) {
-        const response = {
-            status : process.env.UPDATED_DATA_STATUS_CODE,
-            message : deletedManga
-        };
-        if(err){
-            console.log("error found");
-            response.status = process.env.INTERNAL_ERROR_STATUS_CODE;
-            response.message = err;
-        }else if(!deletedManga) {
-            console.log("manga not found");
-            response.status = process.env.NOT_FOUND_STATUS_CODE;
-            response.message = process.env.MANGA_NOT_FOUND_JSON_MSG;
-        }
-        res.status(parseInt(response.status)).json(response.message);
-
-    });
+    Manga.findByIdAndDelete(mangaId)
+    .then((delManga) => _checkManga(delManga, response))
+    .catch((err) => {commonUtil._handleError(err, response);})
+    .finally(() => {commonUtil._sendResponse(res, response);});
 };
 
-/*Internal Functions */
-
+/*search and Pagination Functions */
+       
 const _queryBuilder = function(req){
     let query = {};
     if (req.query && req.query.title){
@@ -221,3 +108,76 @@ const _paginationBuilder = function(req) {
     return _pageVal;
     
 }
+
+/*partial and fully update Functions */
+
+
+const _updateManga = (mangaId, req, res,response, isPartial) => {
+    Manga
+        .findById(mangaId)
+        .then(manga => _checkManga(manga, response))
+        .then(manga => _saveManga(req,manga,response,isPartial))
+        .catch(err => commonUtil._handleError(err, response))
+        .finally(() => commonUtil._sendResponse(res, response));
+}
+
+const _checkManga = (manga, response) => {
+    return new Promise((resolve, reject) => {
+        if (!manga) {
+            commonUtil._updateResponse(process.env.NOT_FOUND_STATUS_CODE ,process.env.MANGA_NOT_FOUND_JSON_MSG, response);
+            reject();
+        } else {
+            resolve(manga);
+        }
+    })
+}
+const _saveManga = (req, manga, response, isPartial)=> {
+
+    return new Promise((resolve, reject) => {
+        _buildMangaObject(req, manga, isPartial)
+        manga.save((err, updatedManga) => {
+            if(err){
+                commonUtil._updateResponse(process.env.INTERNAL_ERROR_STATUS_CODE, err, response);
+                reject();
+            }else {
+                commonUtil._updateResponse(process.env.OK_STATUS_CODE, updatedManga, response);
+                resolve(manga);
+            }
+        });
+    });
+}
+
+const _buildMangaObject = (req, manga, isPartial) => {
+    if (isPartial) {
+        if(req.body.titles) manga.titles = req.body.titles;
+        if(req.body.published) manga.published = req.body.published;
+        if(req.body.status) manga.status = req.body.status;
+        if(req.body.genres) manga.genres = [req.body.genres];
+    } else {
+        commonUtil._debugLog("2 ",req.body.titles);
+        manga.titles = _titleBuiler(req.body);
+        manga.published = req.body.published;
+        manga.status = req.body.status;
+        manga.genres = req.body.genres;
+    }
+}
+
+const _newMangaObjectBuilder = (reqBody) => {
+    return {
+        titles : _titleBuiler(reqBody),
+        published : reqBody.published,
+        status : reqBody.status,
+        genres : reqBody.genres
+    };
+}
+
+const _titleBuiler = (reqBody) => {
+    commonUtil._debugLog("_titlebuilder ", reqBody)
+    return {
+        japanese : reqBody.titles.japanese,
+        english : reqBody.titles.english
+    };
+}
+
+
+

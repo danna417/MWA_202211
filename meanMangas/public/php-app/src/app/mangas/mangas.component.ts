@@ -3,6 +3,7 @@ import { MangaDataService } from '../manga-data.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Author } from '../author/author.component';
 import { AuthenticationService } from '../authentication.service';
+import { environment } from 'src/environments/environment';
 
 export class Manga {
 
@@ -50,6 +51,7 @@ export class MangasComponent implements OnInit {
   page : number = 1;
   offset : number = 0;
   count : number = 5;
+  env = environment;
 
   constructor(private mangaDataService : MangaDataService, public authService: AuthenticationService) { }
 

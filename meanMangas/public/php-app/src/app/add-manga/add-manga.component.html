@@ -1,10 +1,10 @@
 <form [formGroup]="addMangaForm" (ngSubmit)="onAdd()">
 
-japaneseTitle : <input formControlName="japaneseTitle" type="text"><br> 
-englishTitle : <input formControlName="englishTitle" type="text"><br> 
-published : <input formControlName="published" type="text"><br> 
-status : <input formControlName="status" type="text"><br> 
-genres : <input formControlName="genres" type="text"><br> 
+{{env.text_title_eng}} <input formControlName="japaneseTitle" type="text"><br> 
+{{env.text_title_jpn}}  <input formControlName="englishTitle" type="text"><br> 
+{{env.text_published}}  <input formControlName="published" type="text"><br> 
+{{env.text_status}}  <input formControlName="status" type="text"><br> 
+{{env.text_genre}}  <input formControlName="genres" type="text"><br> 
 
-    <button  class="btn btn-primary">Add</button>
+    <button  class="btn btn-primary">{{env.text_add}}</button>
 </form>

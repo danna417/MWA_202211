@@ -3,7 +3,7 @@ import { UserDataService } from '../user-data.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 // import { User } from '../register/register.component';
-
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   isLogin : boolean = false;
   loginFailureMsg : string = "Login Failed";
 
+  env = environment;
   // not able send post body using object
   // user : User = new User();
   constructor(

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { UserDataService } from '../user-data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,8 @@ export class RegisterComponent implements OnInit {
   user: User = new User();
   username!: string;
   password!: string;
+  env = environment;
+
   constructor(private userService: UserDataService, private router: Router) {
    }
 

@@ -4,18 +4,17 @@ const util = require("util");
 
 module.exports.authenticate = (req, res, next) => {
 
-    const response = commonUtil._createDefaultResponse(403, "no token provided");
+    const response = commonUtil._buildResBody(process.env.TOKEN_NOT_FOUND_STATUS_CODE, process.env.TOKEN_NOT_FOUND_JSON_MSG);
     const header = req.headers.authorization;
     const headerLength =parseInt(process.env.AUTH_PROPERTIES, parseInt(process.env.DECIMAL_RADIX));
     
     if (!header || header.split(" ").length !== headerLength) {
-        commonUtil._updateResponse(400, "Bad Request", response);
+        commonUtil._updateResponse(process.env.BAD_REQUEST_STATUS_CODE, process.env.BAD_REQ_JSON_MSG, response);
         commonUtil._sendResponse(res, response);
         return;
     }
     
     const token = header.split(" ")[1];
-    console.log(token);
     const jwtVerifyPromise = util.promisify(jwt.verify, {context: jwt});
     jwtVerifyPromise(token, process.env.JWT_PASSWORD)
         .then(isValid => _verifyToken(isValid, response))
@@ -23,17 +22,16 @@ module.exports.authenticate = (req, res, next) => {
         .catch(err => commonUtil._handleError(err, response))
 }
  
+/* Internal functions */
+
  const _verifyToken = (isValid, response) => {
     return new Promise((resolve, reject) => {
         if (isValid) {
-            commonUtil._updateResponse(200, "token ok", response);
-            console.log(response);
+            commonUtil._updateResponse(process.env.OK_STATUS_CODE, "", response);
             resolve();
         } else {
-            commonUtil._updateResponse(401, "Unauthorized", response);
+            commonUtil._updateResponse(process.env.UNAUTH_STATUS_CODE, process.env.UNAUTH_JSON_MSG, response);
             reject();
         }
     })
 }
-
-/* Internal functions */

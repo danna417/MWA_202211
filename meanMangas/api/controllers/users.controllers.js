@@ -8,7 +8,7 @@ const commonUtil = require('./utilties').Common;
 
 module.exports.addOneUser = (req, res) => {
     // commonUtil._debugLog("addOneUser() executing", req.body);
-    const response = commonUtil._createDefaultResponse(process.env.OK_STATUS_CODE, []);
+    const response = commonUtil._buildResBody(process.env.OK_STATUS_CODE, []);
     bcrypt.genSalt(parseInt(process.env.DECIMAL_RADIX))
         .then(salt => _hashPassword(req.body.password, salt))
         .then(passwordHash => _createUser(req, passwordHash))
@@ -21,7 +21,7 @@ module.exports.login = (req, res) => {
     // commonUtil._debugLog("login starts");
     // commonUtil._debugLog(req.body);
 
-    const response = commonUtil._createDefaultResponse(process.env.OK_STATUS_CODE, {});
+    const response = commonUtil._buildResBody(process.env.OK_STATUS_CODE, {});
 
     User.findOne({username: req.body.username})
         .then(user => _checkUserExist(process.env.OK_STATUS_CODE, user, response))

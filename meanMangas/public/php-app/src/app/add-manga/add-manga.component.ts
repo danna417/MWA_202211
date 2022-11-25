@@ -3,6 +3,8 @@ import { Manga } from '../mangas/mangas.component';
 import { MangaDataService } from '../manga-data.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-add-manga',
@@ -12,7 +14,8 @@ import { Router } from '@angular/router';
 export class AddMangaComponent implements OnInit {
   manga !: Manga;
   addMangaForm !: FormGroup;
-
+  env = environment;
+  
   constructor(
       private router : Router, 
       private mangaDataServie : MangaDataService) { 
