@@ -102,7 +102,7 @@ const _addAuthor = function(req, res, manga) {
             response.message = err;
         }else(
             response.status = process.env.NEW_DATA_STATUS_CODE,
-            response.message = updatedManga.authors
+            response.message = updatedManga
         )
         res.status(parseInt(response.status)).json(response.message);
     });

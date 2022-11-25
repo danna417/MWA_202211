@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { Manga } from './mangas/mangas.component';
 import { Author } from './author/author.component';
 
 @Injectable({
@@ -14,46 +14,41 @@ export class AuthorDataService {
 
   public getAuthors(mangaId: String): Observable<Author[]> {
 
-    const url: string= this.apiBaseUrl + "/manga" + mangaId + "/author";
+    const url: string= this.apiBaseUrl + "/manga/" + mangaId + "/author";
     
     return this.http.get<Author[]>(url);
   }
 
   public getAuthor(mangaId: string, authorId: string): Observable<Author> {
-    const url: string= this.apiBaseUrl + "/manga" + mangaId + "/author/" + authorId;
+    const url: string= this.apiBaseUrl + "/manga/" + mangaId + "/author/" + authorId;
    console.log("getOne before be ", url)
     
     return this.http.get<Author>(url);
   }
 
   public deleteAuthor(mangaId: string, authorId: string): Observable<Author> {
-    const url: string= this.apiBaseUrl + "/manga" + mangaId + "/author/" + authorId;
+    const url: string= this.apiBaseUrl + "/manga/" + mangaId + "/author/" + authorId;
+    const headers = this._buildHeader();
     
-    return this.http.delete<Author>(url);
+    return this.http.delete<Author>(url, {headers});
   }
 
-  public addAuthor(newAuthor : Author, mangaId: string, authorId: string): Observable<Author> {
-    const url: string= this.apiBaseUrl + "/manga" + mangaId + "/author/" + authorId;
+  public addAuthor(newAuthor : Object, mangaId: string): Observable<Manga> {
+    const url: string= this.apiBaseUrl + "/manga/" + mangaId + "/author";
+    const headers = this._buildHeader();
     
-    return this.http.post<Author>(url, newAuthor);
+    return this.http.post<Manga>(url, newAuthor, { headers });
   }
 
-//Todo 
-  // public UpdateAuthorFully(AuthorId: string): Observable<Author> {
-  //   const url: string= this.apiBaseUrl + "/Author/" + AuthorId;
+  public UpdateAuthorFully(authorId: string, mangaId: string, updtVal:Object): Observable<Manga> {
+    const url: string= this.apiBaseUrl + "/manga/" + mangaId + "/author/" + authorId;
+    const headers = this._buildHeader();
     
-  //   return this.http.delete<Author>(url);
-  // }
+    return this.http.put<Manga>(url,  updtVal, { headers });
+  }
 
-  // public UpdateAuthorPartially(AuthorId: string): Observable<Author> {
-  //   const url: string= this.apiBaseUrl + "/Author/" + AuthorId;
-    
-  //   return this.http.delete<Author>(url);
-  // }
-
-  // public InsertAuthor(AuthorId: string): Observable<Author> {
-  //   const url: string= this.apiBaseUrl + "/Author/" + AuthorId;
-    
-  //   return this.http.delete<Author>(url);
-  // }
+private _buildHeader(){
+ return { 'authorization': 'Bearer ' + localStorage.getItem("token")}
+}
+  
 }

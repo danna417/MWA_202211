@@ -34,28 +34,23 @@ export class MangaDataService {
   }
   public addManga(newManga : Manga): Observable<Manga> {
     const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")}
-    console.log(headers);
     const url: string= this.apiBaseUrl + "/manga";
     
     return this.http.post<Manga>(url, newManga,  { headers });
   }
 
-//Todo 
-  // public UpdateMangaFully(mangaId: string): Observable<Manga> {
-  //   const url: string= this.apiBaseUrl + "/manga/" + mangaId;
+  public UpdateMangaPartially(mangaId: string, updtValue:Object): Observable<Manga> {
+    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")}
+    const url: string= this.apiBaseUrl + "/manga/" + mangaId;
     
-  //   return this.http.delete<Manga>(url);
-  // }
+    return this.http.patch<Manga>(url, updtValue , { headers });
+  }
 
-  // public UpdateMangaPartially(mangaId: string): Observable<Manga> {
-  //   const url: string= this.apiBaseUrl + "/manga/" + mangaId;
+  public UpdateMangaFully(mangaId: String, updtManga:Manga): Observable<Manga> {
+    const headers = { 'authorization': 'Bearer ' + localStorage.getItem("token")}
+    const url: string= this.apiBaseUrl + "/manga/" + mangaId;
     
-  //   return this.http.delete<Manga>(url);
-  // }
-
-  // public InsertManga(mangaId: string): Observable<Manga> {
-  //   const url: string= this.apiBaseUrl + "/manga/" + mangaId;
-    
-  //   return this.http.delete<Manga>(url);
-  // }
+    return this.http.put<Manga>(url, updtManga , { headers });
+  }
+  
 }

@@ -12,6 +12,8 @@ import { AuthenticationService } from '../authentication.service';
 export class MangaComponent implements OnInit {
 
   manga: Manga =  new Manga;
+  isupdateMode: boolean =  false;
+  isAuthorAddMode: boolean =  false;
   authors:Author[] = [];
   constructor( 
     private mangaDataService : MangaDataService,
@@ -21,7 +23,6 @@ export class MangaComponent implements OnInit {
 
   ngOnInit(): void {
     const mangaId: string= this.route.snapshot.params["mangaId"];
-
     this.mangaDataService.getManga(mangaId).subscribe({
       next: (manga)=> this._fillManga(manga),
       error: (error)=>{this.manga= new Manga; console.log(error);
@@ -31,12 +32,7 @@ export class MangaComponent implements OnInit {
 
   private _fillManga(manga: Manga) {
     this.manga= manga;
-    console.log("getManga on Angu", this.manga)
-  this.authors = this.manga.authors;
-  
-  console.log("getManga on ", this.authors)
-  console.log("getManga on A", this.authors[0]);
-
+    this.authors = this.manga.authors;
   }
 
   onDeleteManga(): void{
@@ -50,15 +46,62 @@ export class MangaComponent implements OnInit {
       this.router.navigate(["/mangas"])
     });
   }
-  onUpdate(): void{
-    
-    const mangaId = this.route.snapshot.params['mangaId'];
 
-    console.log("deleteMAnga request", mangaId);
-    this.mangaDataService.deleteManga(mangaId).subscribe(manga => {
-      console.log("deleted manga: ", manga);
-      
-      this.router.navigate(["/mangas"])
+  onCancelUpdate():void{
+    this._resetUpdateMode();
+  }
+
+  onUpdateMode(): void{
+    this.isupdateMode = true;
+  }
+
+  onAddAuthorMode(): void{
+    this.isAuthorAddMode = true;
+  }
+
+  onUpdateInfo(): void{
+    console.log("onUpdateInfo starts")
+    const mangaId = this.route.snapshot.params['mangaId'];
+    
+    this.mangaDataService.UpdateMangaFully(mangaId,this.manga).subscribe(updtmanga => {
+      this._resetUpdateMode();
+      this.router.navigate(["manga/", mangaId])
+    })
+  }
+  onUpdatePartialJapTitle():void{
+    let titles={
+      japanese : this.manga.titles.japanese
+    }
+    this._updatePartial(titles);
+  }
+  onUpdatePartialEngTitle():void{
+    let titles={
+      english : this.manga.titles.english
+    }
+    this._updatePartial(titles);
+  }
+  onUpdatePartialPublished():void{
+    this._updatePartial({
+      published: this.manga.published
     });
   }
+  onUpdatePartialStatus():void{
+    this._updatePartial({
+      status: this.manga.status
+    });
+  }
+
+  private _updatePartial(value: object):void{
+    const mangaId = this.route.snapshot.params['mangaId'];
+    this.mangaDataService.UpdateMangaPartially(mangaId, value).subscribe({
+      next: (manga)=> { this._resetUpdateMode();this.router.navigate(["/manga/", manga._id])},
+      error: (error)=>{ this.manga= new Manga(); console.log(error);
+      },
+    });
+  }
+
+  private _resetUpdateMode(): void{
+    this.isupdateMode = false;
+  }
+
 }

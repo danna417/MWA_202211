@@ -16,7 +16,6 @@ import { FooterComponent } from './footer/footer.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AddMangaComponent } from './add-manga/add-manga.component';
 import { RegisterComponent } from './register/register.component';
-import { AddAuthorComponent } from './add-author/add-author.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { AddAuthorComponent } from './add-author/add-author.component';
     FooterComponent,
     ErrorPageComponent,
     AddMangaComponent,
-    RegisterComponent,
-    AddAuthorComponent
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -60,11 +58,6 @@ import { AddAuthorComponent } from './add-author/add-author.component';
         path: 'manga/:mangaId',
         component : MangaComponent
       },
-      {
-        path: "manga/:mangaId/author",
-        component : AddAuthorComponent
-      }
-      ,
       {
         path: "manga/:mangaId/author/:authorId",
         component : AuthorComponent

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
+import { AuthorDataService } from '../author-data.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-author',
@@ -7,14 +10,66 @@ import { AuthenticationService } from '../authentication.service';
   styleUrls: ['./author.component.css']
 })
 export class AuthorComponent implements OnInit {
-  author!: Author;
-  constructor(public authService : AuthenticationService) { }
+  author: Author = new Author();
+  isAuthorEdit: boolean = false;
+  mangaId!: string;
+  authorId!: string;
+  constructor(
+    private authorDataService : AuthorDataService,
+    private router : Router,
+    private route : ActivatedRoute,
+    public authService : AuthenticationService) {     }
 
   ngOnInit(): void {
-  }
-  onEditAuthor():void {
+    this.authorId= this.route.snapshot.params["authorId"];
+    this.mangaId= this.route.snapshot.params["mangaId"];
 
+    if(this.authorId) this.isAuthorEdit = true;
+    this._getData(this.authorId);
   }
+
+  private _getData(authorId: string){
+    if(this.isAuthorEdit){
+      this.authorDataService.getAuthor(this.mangaId,this.authorId).subscribe({
+        next: (author)=> this._fillAuthor(author),
+        error: (error)=>{this.author= new Author(); console.log(error);
+        },
+      });
+    }
+  }
+  
+  onEditAuthor():void {
+    this.authorDataService.UpdateAuthorFully(this.authorId, this.mangaId,{
+      name: this.author.name,
+      role: this.author.role
+    }).subscribe({
+        next: (manga)=> {console.log("author added ", manga); this.router.navigate(["manga/" , this.mangaId]);},
+        error: (error)=>{console.log(error);},
+    });
+  }
+  onAddAuthor():void {
+  const mangaId: string= this.route.snapshot.params["mangaId"];
+
+    this.authorDataService.addAuthor({
+      name: this.author.name,
+      role: this.author.role
+    }, this.mangaId).subscribe({
+        next: (manga)=> {console.log("author added ", manga); this.router.navigate(["manga/" , this.mangaId]);},
+        error: (error)=>{console.log(error);},
+    });
+  }
+  onAuthor():void {
+    if(this.isAuthorEdit){
+      this.onEditAuthor();
+    }else{
+      this.onAddAuthor();
+    }
+  }
+
+  private _fillAuthor(author: Author) {
+    this.author= author;
+  }
+
 }
 
 export class Author{

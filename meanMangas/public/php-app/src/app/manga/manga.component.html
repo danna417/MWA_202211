@@ -1,54 +1,75 @@
-
-Title: <br>
-japaneseTitle : {{manga.titles.japanese}}<br>
-englishTitle : {{manga.titles.english}}<br>
-published : {{manga.published}}<br>
-status : {{manga.status}}<br>
-authors : 
-
-<ul>
-<li *ngFor="let author of authors">
+<div *ngIf="!isupdateMode" class="row ms-4">
+    <h1>Manga Detail</h1>
+    <div class="col-sm">
+    Japanese Title : {{manga.titles.japanese}}<br>
+    English Title : {{manga.titles.english}}<br>
+    published : {{manga.published}}<br>
+    status : {{manga.status}}<br>
+    authors : 
+    <ul>
+        <li *ngFor="let author of authors">
+            
+            <a *ngIf="authService.isLoggedIn" routerLink="author/{{author._id}}">{{author.name}} ({{author.role}})</a> 
+            <span *ngIf="!authService.isLoggedIn">{{author.name}} ({{author.role}})</span> 
+        </li>
+    </ul>
+    <p>
+        <button class="btn btn-sm btn-primary" type="button" (click)="onUpdateMode()">Edit</button>
+    </p>
     
-    <a *ngIf="authService.isLoggedIn" routerLink="author/{{author._id}}">{{author.name}} ({{author.role}})</a> 
-    <span *ngIf="!authService.isLoggedIn">{{author.name}} ({{author.role}})</span> 
-</li>
-</ul>
+        <button class="btn btn-sm btn-success" type="submit" (click)="onAddAuthorMode()">Add Author</button>
+    </div>
+</div>
 
 <br>
 <br>
-<div  class="row mt-4 ms-4">
-<form *ngIf="authService.isLoggedIn" (ngSubmit)="onUpdate()">
+<div *ngIf="authService.isLoggedIn &&  isAuthorAddMode">
+    <app-author></app-author>
+</div>
+
+<div  class="row mt-5 ms-6">
+<form *ngIf="authService.isLoggedIn && isupdateMode" (ngSubmit)="onUpdateInfo()">
     <div class="ms-4 mb-3 row">
-        <label for="japaneseTitle" class="col-sm-1 col-form-label">Japanese Title</label>
+        <label for="japaneseTitle" class="col-sm-2 col-form-label">Japanese Title</label>
         <div class="col-sm-10">
             <input class="form-control w-25" type="text" id="japaneseTitle" name="japaneseTitle" [(ngModel)]="manga.titles.japanese">
+            <button class="btn btn-sm btn-info " (click)="onUpdatePartialJapTitle()" >&rarr;</button>
+        
         </div>
     </div>
     <div class="ms-4 mb-3 row">
-        <label for="englishTitle" class="col-sm-1 col-form-label">English Title</label>
+        <label for="englishTitle" class="col-sm-2 col-form-label">English Title</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control w-25" id="englishTitle" name="englishTitle" [(ngModel)]="manga.titles.japanese">
+          <input type="text" class="form-control w-25" id="englishTitle" name="englishTitle" [(ngModel)]="manga.titles.english">
+        <button class="btn btn-sm btn-info " (click)="onUpdatePartialEngTitle()" >&rarr;</button>
+          
         </div>
     </div>
     <div class="ms-4 mb-3 row">
-        <label for="published" class="col-sm-1 col-form-label">Published Year</label>
+        <label for="published" class="col-sm-2 col-form-label">Published Year</label>
         <div class="col-sm-10">
           <input type="number" class="form-control w-25" id="published" name="published" [(ngModel)]="manga.published">
+          <button class="btn btn-sm btn-info" (click)="onUpdatePartialPublished()" >&rarr;</button>
+        
         </div>
     </div>
     <div class="ms-4 mb-3 row">
-        <label for="englishTitle" class="col-sm-1 col-form-label">Status</label>
+        <label for="status" class="col-sm-2 col-form-label">Status</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control w-25" id="englishTitle" name="englishTitle" [(ngModel)]="manga.status">
+          <input type="text" class="form-control w-25" id="status" name="status" [(ngModel)]="manga.status">
+          <button class="btn btn-sm btn-info " (click)="onUpdatePartialStatus()" >&rarr;</button>
+       
         </div>
     </div>
+    <p>
+        <button type="submit" class="btn btn-sm btn-success mr-auto ">Update Manga Info</button>
+   </p> 
+   <div class="col-sm-5 inline">
 
-    <div class="ms-4 w-25">
-        <button class="btn btn-sm btn-success" type="submit">Add Achievment</button>
-    </div>
+   <button (click)="onCancelUpdate()" class="btn btn-sm btn-secondary ml-auto">Cancel</button>
+   <button (click)="onDeleteManga()" class="btn btn-sm btn-danger ms-3">Delete</button>
+   </div>
+    
 </form>
 </div>
 
-    <button *ngIf="authService.isLoggedIn">Update Manga Info</button>
-
-    <button *ngIf="authService.isLoggedIn" (click)="onDeleteManga()">Delete</button>
