@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(environment.nav_manga + ":" + environment.param_mangaId + environment.nav_author + ":" + environment.param_authorId)
   }
 
 }

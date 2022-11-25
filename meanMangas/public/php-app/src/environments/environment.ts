@@ -13,7 +13,7 @@ export const environment = {
   nav_home: "",
   nav_mangas: "mangas",
   nav_mangas_add: "mangas/add",
-  nav_author: "author",
+  nav_author: "/author/",
   nav_manga: "manga/",
   nav_register: "register",
   param_mangaId: "mangaId",
@@ -51,9 +51,10 @@ export const environment = {
   text_prev: "Prev",
   default_page: 1,
   default_page_count: 5,
+  default_page_offset: 0,
   query_offset: "offset=",
   query_count: "count=",
-  query_name: "name=",
+  query_title: "title=",
 };
 
 /*

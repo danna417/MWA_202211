@@ -13,9 +13,9 @@ export class MangaDataService {
 
   constructor(private http:HttpClient) { }
 
-  public getMangas(): Observable<Manga[]> {
-
-    const url: string= this.apiBaseUrl + environment.manga_service_url;
+  public getMangas(offset:number, count:number, titleEng : String): Observable<Manga[]> {
+    const searchQuery = this._buildSearchQuery(offset, count, titleEng);
+    const url: string= this.apiBaseUrl + environment.manga_service_url+ searchQuery;
     
     return this.http.get<Manga[]>(url);
   }
@@ -56,5 +56,11 @@ export class MangaDataService {
 private _buildHeader(){
   //authorization can not be read from environment
  return { 'authorization' : environment.token_bearer + localStorage.getItem(environment.token)}
+}
+private _buildSearchQuery(offset:number, count:number, titleEng : String){
+  //authorization can not be read from environment
+  let search : string = "?" + environment.query_offset + offset + "&" +environment.query_count + count
+  if(titleEng) search += "&"+environment.query_title+titleEng;
+  return search;
 }
 }

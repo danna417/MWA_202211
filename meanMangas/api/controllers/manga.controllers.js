@@ -35,7 +35,7 @@ module.exports.addOne = function(req,res){
     const response = commonUtil._buildResBody(process.env.NOT_FOUND_STATUS_CODE, []);
 
     Manga.create(newManga)
-    .then((manga) => commonUtil._updateResponse(process.env.NEW_DATA_STATUS_CODE,manga))
+    .then((manga) => commonUtil._updateResponse(process.env.NEW_DATA_STATUS_CODE,manga, response))
     .catch((err) => {commonUtil._handleError(err, response);})
     .finally(() => {commonUtil._sendResponse(res, response);});
 };

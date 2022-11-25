@@ -3,6 +3,7 @@ import { AuthenticationService } from '../authentication.service';
 import { AuthorDataService } from '../author-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { Manga } from '../mangas/mangas.component';
 
 @Component({
   selector: 'app-author',
@@ -44,7 +45,7 @@ export class AuthorComponent implements OnInit {
       name: this.author.name,
       role: this.author.role
     }).subscribe({
-        next: (manga)=> {console.log("author added ", manga); this.router.navigate(["manga/" , this.mangaId]);},
+        next: (manga)=> this._completeAction(manga),
         error: (error)=>{console.log(error);},
     });
   }
@@ -55,7 +56,7 @@ export class AuthorComponent implements OnInit {
       name: this.author.name,
       role: this.author.role
     }, this.mangaId).subscribe({
-        next: (manga)=> {console.log("author added ", manga); this.router.navigate(["manga/" , this.mangaId]);},
+        next: (manga)=> this._completeAction(manga),
         error: (error)=>{console.log(error);},
     });
   }
@@ -71,6 +72,14 @@ export class AuthorComponent implements OnInit {
     this.author= author;
   }
 
+  private _resetUpdateMode(): void{
+    this.isAuthorEdit = false;
+  }
+  private _completeAction(manga:Manga){
+    console.log("author added ", manga);
+    this._resetUpdateMode(); 
+     this.router.navigate([this.env.nav_manga , this.mangaId]);
+  }
 }
 
 export class Author{

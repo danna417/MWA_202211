@@ -1,8 +1,8 @@
 
-<form  [formGroup]="searchForm" (ngSubmit)="onSearch()" >
+<form  (ngSubmit)="onSearch()" >
 <div class="col-sm-5 inline">
     <label  class="sr-only">Search by title </label>
-    <input type="text" class="form-control"  placeholder="Title">
+    <input type="text" class="form-control"  placeholder="Title" name="englishTitle" [(ngModel)]="englishTitle">
      <button type="submit" class="col btn btn-primary">Search</button>
 </div>
 
@@ -18,5 +18,9 @@ The list of Mangas are:<br/>
     </li>
 </ul>
 
-<button *ngIf="authService.isLoggedIn" routerLink="add">Add manga</button>
+<p><button class="btn" (click) = 'onPrev()'>Previous</button>
+{{page}}
+<button class="btn" (click) = 'onNext()'>Next</button>
+</p>
+<button *ngIf="authService.isLoggedIn" class="btn btn-info" routerLink="add">Add manga</button>
 </div>

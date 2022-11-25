@@ -47,23 +47,21 @@ export class Manga {
 })
 export class MangasComponent implements OnInit {
   mangas !: Manga[];
-  searchForm !: FormGroup;
-  page : number = 1;
-  offset : number = 0;
-  count : number = 5;
+  page : number = environment.default_page;
+  offset : number = environment.default_page_offset;
+  count : number = environment.default_page_count;
   env = environment;
+  englishTitle !: string;
 
   constructor(private mangaDataService : MangaDataService, public authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.getData();
-    this.searchForm = new FormGroup({
-      title: new FormControl("")
-    });
   }
 
   private getData(): void{
-    this.mangaDataService.getMangas().subscribe({
+
+    this.mangaDataService.getMangas( this.offset, this.count, this.englishTitle).subscribe({
       next: (mangas)=> this.fillMangas(mangas),
       error: (error)=>{this.mangas= []; console.log(error);
       },
