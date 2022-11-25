@@ -15,10 +15,10 @@
         </li>
     </ul>
     <p>
-        <button class="btn btn-sm btn-primary" type="button" (click)="onUpdateMode()">Edit</button>
+        <button class="btn btn-sm btn-primary" type="button" (click)="onUpdateMode()">{{env.text_edit}}</button>
     </p>
     
-        <button class="btn btn-sm btn-success" type="submit" (click)="onAddAuthorMode()">Add Author</button>
+        <button class="btn btn-sm btn-success" type="submit" (click)="onAddAuthorMode()">{{env.text_add_author}}</button>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
 <div  class="row mt-5 ms-6">
 <form *ngIf="authService.isLoggedIn && isupdateMode" (ngSubmit)="onUpdateInfo()">
     <div class="ms-4 mb-3 row">
-        <label for="japaneseTitle" class="col-sm-2 col-form-label">Japanese Title</label>
+        <label for="japaneseTitle" class="col-sm-2 col-form-label">{{env.text_title_jpn}}</label>
         <div class="col-sm-10">
             <input class="form-control w-25" type="text" id="japaneseTitle" name="japaneseTitle" [(ngModel)]="manga.titles.japanese">
             <button class="btn btn-sm btn-info " (click)="onUpdatePartialJapTitle()" >&rarr;</button>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="ms-4 mb-3 row">
-        <label for="englishTitle" class="col-sm-2 col-form-label">English Title</label>
+        <label for="englishTitle" class="col-sm-2 col-form-label">{{env.text_title_eng}}</label>
         <div class="col-sm-10">
           <input type="text" class="form-control w-25" id="englishTitle" name="englishTitle" [(ngModel)]="manga.titles.english">
         <button class="btn btn-sm btn-info " (click)="onUpdatePartialEngTitle()" >&rarr;</button>
@@ -47,7 +47,7 @@
         </div>
     </div>
     <div class="ms-4 mb-3 row">
-        <label for="published" class="col-sm-2 col-form-label">Published Year</label>
+        <label for="published" class="col-sm-2 col-form-label">{{env.text_published}}</label>
         <div class="col-sm-10">
           <input type="number" class="form-control w-25" id="published" name="published" [(ngModel)]="manga.published">
           <button class="btn btn-sm btn-info" (click)="onUpdatePartialPublished()" >&rarr;</button>
@@ -55,9 +55,17 @@
         </div>
     </div>
     <div class="ms-4 mb-3 row">
-        <label for="status" class="col-sm-2 col-form-label">Status</label>
+        <label for="status" class="col-sm-2 col-form-label">{{env.text_status}}</label>
         <div class="col-sm-10">
           <input type="text" class="form-control w-25" id="status" name="status" [(ngModel)]="manga.status">
+          <button class="btn btn-sm btn-info " (click)="onUpdatePartialStatus()" >&rarr;</button>
+       
+        </div>
+    </div>
+    <div class="ms-4 mb-3 row">
+        <label for="genres" class="col-sm-2 col-form-label">{{env.text_genre}}</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control w-25" id="genres" name="genres" [(ngModel)]="manga.genres">
           <button class="btn btn-sm btn-info " (click)="onUpdatePartialStatus()" >&rarr;</button>
        
         </div>
@@ -67,8 +75,8 @@
    </p> 
    <div class="col-sm-5 inline">
 
-   <button (click)="onCancelUpdate()" class="btn btn-sm btn-secondary ml-auto">Cancel</button>
-   <button (click)="onDeleteManga()" class="btn btn-sm btn-danger ms-3">Delete</button>
+   <button (click)="onCancelUpdate()" class="btn btn-sm btn-secondary ml-auto">{{env.text_cancel}}</button>
+   <button (click)="onDeleteManga()" class="btn btn-sm btn-danger ms-3">{{env.text_update}}</button>
    </div>
     
 </form>

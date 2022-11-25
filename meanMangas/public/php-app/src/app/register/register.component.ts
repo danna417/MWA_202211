@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
       username: this.username,
       password: this.password
     }).subscribe({
-        next: (user)=> {console.log("regsitered user", user); this.router.navigate(["mangas"]);},
+        next: (user)=> {console.log("regsitered user", user); this.router.navigate([this.env.nav_mangas]);},
         error: (error)=>{console.log(error);},
     });
   

@@ -1,4 +1,3 @@
-
 export const environment = {
   production: false,
   base_url: "http://localhost:3001/api/",
@@ -14,13 +13,13 @@ export const environment = {
   nav_manga: "manga/",
   nav_register: "register",
   param_mangaId: "mangaId",
-  param_auhtorId: "authorId",
+  param_authorId: "authorId",
   token_bearer: "Bearer ",
   header_authorization: "authorization ",
   token: "token",
   text_welcome: "Welcome to MEAN Manga",
   text_welcome_Additional: "You can find interesting Manga List here",
-  text_page_not_found: "Page not found",
+  text_page_not_found: "Your Requested Page Is Not Found",
   text_home: "Home",
   text_mangas: "mangas",
   text_register: "Register",
@@ -40,6 +39,7 @@ export const environment = {
   text_edit: "Edit",
   text_update: "Update",
   text_cancel: "Cancel",
+  text_add: "Add",
   text_add_author: "Add Author",
   text_delete_manga: "Delete Manga",
   text_search_title: "Search By Title",

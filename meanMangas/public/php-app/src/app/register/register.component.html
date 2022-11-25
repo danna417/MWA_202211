@@ -1,9 +1,9 @@
 <form (ngSubmit)="onSubmit()">
     <div>
-        Username <input type="text" name="username" [(ngModel)]="username">
+        {{env.text_username}} <input type="text" name="username" [(ngModel)]="username">
     </div>
     <div>
-        Password <input type="text" name="password" [(ngModel)]="password">
+        {{env.text_password}} <input type="text" name="password" [(ngModel)]="password">
     </div>
 
     <div>
